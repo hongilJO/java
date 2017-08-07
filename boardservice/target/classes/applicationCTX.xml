@@ -2,8 +2,26 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
 	<context:component-scan base-package="com.springbook.biz.board"></context:component-scan>
+	<bean id="log" class="com.springbook.biz.board.logger"></bean>
+	<bean id="around_log" class="com.springbook.biz.board.AroundAdvice"></bean> 
+	<aop:config>
+		<aop:pointcut expression="execution(* com.springbook.biz.board..*Impl.*(..))" id="allPointcut"/>
+		<!--  
+		<aop:aspect ref="log">
+			<aop:after-throwing method="after_throwingPrintLog" pointcut-ref="allPointcut"/>
+			<aop:after method="afterPrintLog" pointcut-ref="allPointcut"/>
+		</aop:aspect>
+		-->
+		<aop:aspect ref="around_log">
+			<aop:around method="aroundLog" pointcut-ref="allPointcut"></aop:around>
+		
+		</aop:aspect>
+	</aop:config>
+	
 </beans>

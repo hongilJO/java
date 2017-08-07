@@ -3,6 +3,7 @@ package com.springbook.biz.board;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -99,7 +100,7 @@ public class BoardDAO {
 	}
 	public List<BoardDTO> getBoardList(BoardDTO dto){
 		System.out.println("==> jdbc로 getBoardList() 기능 처리");
-		List<BoardDTO> boardlist = null;
+		List<BoardDTO> boardlist = new ArrayList<BoardDTO>();
 		
 		try{
 			conn = JDBCUtill.getConnection();
