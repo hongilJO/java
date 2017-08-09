@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.springframework.stereotype.Repository;
+
 import com.springbook.biz.board.JDBCUtill;
 
+@Repository("dao")
 public class UserDAO {
 	
 	private Connection conn = null;

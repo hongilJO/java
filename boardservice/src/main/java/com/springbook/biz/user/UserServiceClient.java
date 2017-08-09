@@ -8,8 +8,9 @@ public class UserServiceClient {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		AbstractApplicationContext ctx = new GenericXmlApplicationContext("applicationContext.xml");
-		UserService userService = ctx.getBean("userService", UserServiceImpl.class);
+		//AbstractApplicationContext ctx = new GenericXmlApplicationContext("applicationContext.xml");
+		AbstractApplicationContext ctx = new GenericXmlApplicationContext("applicationANNOTATION.xml");
+		UserService userService = (UserService)ctx.getBean("userService",UserService.class);
 		
 		UserDTO dto = new UserDTO();
 		dto.setId("test");

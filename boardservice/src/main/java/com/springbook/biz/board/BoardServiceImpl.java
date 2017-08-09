@@ -9,18 +9,21 @@ import org.springframework.stereotype.Service;
 public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
-	private BoardDAO boardDao;
+	private BoardDAO_JdbcTemplate boardDao;
+	//private BoardDAO boardDao;
 	
 	@Override
 	public void insertBoard(BoardDTO dto) {
 		// TODO Auto-generated method stub
-		/*
+		/*8
 		System.out.println(dto.getSeq());
 		if (dto.getSeq() == 0){
 			throw new IllegalArgumentException("0번 글은 등록할수 없습니다!");
 		}
 		*/
 		boardDao.insertBoard(dto);
+		//boardDao.insertBoard(dto);
+		
 	}
 
 	@Override
