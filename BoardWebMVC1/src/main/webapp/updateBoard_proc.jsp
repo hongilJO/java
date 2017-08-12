@@ -1,0 +1,31 @@
+<%@page import="com.springbook.biz.board.BoardDAO"%>
+<%@page import="com.springbook.biz.board.BoardDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<% 
+	request.setCharacterEncoding("UTF-8");
+	String title = request.getParameter("title");
+	String content = request.getParameter("content");
+	String seq = request.getParameter("seq");
+	
+	BoardDTO dto = new BoardDTO();
+	dto.setTitle(title);
+	dto.setContent(content);
+	dto.setSeq(Integer.parseInt(seq));
+	
+	BoardDAO dao = new BoardDAO();
+	dao.updateBoard(dto);
+	
+	response.sendRedirect("getBoardList.jsp");
+%>
+
+</body>
+</html>
