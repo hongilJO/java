@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+	<context:component-scan base-package="com.springbook.biz.board"></context:component-scan>
+	<bean id="userDao" class="com.springbook.biz.user.UserDAO"></bean>
+	<bean id="userService" class="com.springbook.biz.user.UserServiceImpl">
+		<property name="dao" ref="userDao"></property>
+	</bean>
+	<bean id="beforeAdvice" class="com.springbook.biz.common.BeforeAdvice">
+	</bean>
+	<bean id="afterReturnAdvice" class="com.springbook.biz.common.AfterReturnAdvice">
+	</bean>
+	<bean id="aroundAdvice" class="com.springbook.biz.common.AroundAdvice">
+	</bean> 
+	
+	<aop:config>
+		<aop:pointcut expression="execution(* com.springbook.biz.user..*Impl.get*(..))" id="allPointcut"/>
+		
+		<aop:aspect ref="aroundAdvice">
+			<aop:around pointcut-ref="allPointcut" method="aroundLog"/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>
