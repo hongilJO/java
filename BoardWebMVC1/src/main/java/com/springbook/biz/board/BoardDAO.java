@@ -17,7 +17,7 @@ public class BoardDAO {
 	private ResultSet rs = null;
 
 	private final String board_insert = "insert into board (seq, title, writer, content) values((select nvl(max(seq),0)+1 from board),?,?,?)";
-	private final String board_update = "update board set title=?, content=?, where seq=?";
+	private final String board_update = "update board set title=?, content=? where seq=?";
 	private final String board_delete = "delete board where seq=?";
 	private final String board_get = "select * from board where seq=?";
 	private final String board_list = "select * from board order by seq desc";
@@ -84,7 +84,7 @@ public class BoardDAO {
 			
 			if(rs.next()){
 				board = new BoardDTO();
-				board.setCnt(rs.getInt("seq"));
+				board.setSeq(rs.getInt("seq"));
 				board.setTitle(rs.getString("title"));
 				board.setWriter(rs.getString("writer"));
 				board.setContent(rs.getString("content"));
@@ -108,7 +108,7 @@ public class BoardDAO {
 			rs = stmt.executeQuery();
 			while(rs.next()){
 				BoardDTO board = new BoardDTO();
-				board.setCnt(rs.getInt("seq"));
+				board.setSeq(rs.getInt("seq"));
 				board.setTitle(rs.getString("title"));
 				board.setWriter(rs.getString("writer"));
 				board.setContent(rs.getString("content"));
