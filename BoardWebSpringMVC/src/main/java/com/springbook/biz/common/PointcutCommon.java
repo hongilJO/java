@@ -10,7 +10,7 @@ public class PointcutCommon {
 		
 	}
 	
-	@Pointcut("execution(* com.springbook.biz..*Impl.*(..))")
+	@Pointcut("execution(* com.springbook.biz..*Impl.get*(..))")
 	public void allPointcut(){
 		
 	}

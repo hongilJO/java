@@ -2,10 +2,51 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
 	
-	<!-- handlerMapping 등록 -->
+	
+	<context:component-scan base-package="com.springbook.biz"></context:component-scan>
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<!-- aop:aspectj-autoproxy는 web.xml 과 annotationContext.xml 양쪽에 넣어줘야 한다.-->
+	
+	<!-- 파일 업로드 (id 고정) -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="300000"></property>
+	</bean>
+	<!-- exception 예외처리  (id 고정) -->
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.ArithmeticException">common/arithmeticError.jsp</prop>
+				<prop key="java.lang.NullPointerException">common/nullPointerError.jsp</prop>
+			</props>
+		</property>
+		<property name="defaultErrorView" value="common/error.jsp"></property>
+	</bean>
+	<!-- 다국어 지원 (id 고정)-->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>message.messageSource</value>
+			</list>
+		</property>
+	</bean>
+	<!-- Locale Resolver 등록 - http 세션에 등록된 사용자의 언어설정을 읽어옴    (id 고정)-->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+	</bean>
+	<!-- Locale change interceptor 등록 - 페이지의 언어를 변경할 수 있도록 해줌 -->
+	<mvc:interceptors>
+	<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="lang"></property>
+	</bean>
+	</mvc:interceptors>
+	<!--
+	
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
@@ -20,7 +61,6 @@
 		</property>
 	</bean>
 	
-	<!-- Controller 등록 -->
 	<bean id="login" class="com.springbook.biz.controller.LoginController"></bean>
 	<bean id="getBoardList" class="com.springbook.biz.controller.GetBoardListController"></bean>
 	<bean id="getBoard" class="com.springbook.biz.controller.getBoardController"></bean>
@@ -29,10 +69,11 @@
 	<bean id="deleteBoard" class="com.springbook.biz.controller.DeleteBoardController"></bean>
 	<bean id="logout" class="com.springbook.biz.controller.LogoutController"></bean>
 	
-	<!-- viewResolver 등록 -->
+	
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
 		<property name="prefix" value="/WEB-INF/board/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+	-->
 </beans>

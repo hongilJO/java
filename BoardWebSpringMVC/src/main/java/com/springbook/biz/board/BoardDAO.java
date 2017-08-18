@@ -20,8 +20,10 @@ public class BoardDAO {
 	private final String board_update = "update board set title=?, content=? where seq=?";
 	private final String board_delete = "delete board where seq=?";
 	private final String board_get = "select * from board where seq=?";
-	private final String board_list = "select * from board order by seq desc";
-
+	//private final String board_list = "select * from board order by seq desc";
+	private final String board_list_t = "select * from board where title like '%'||?||'%' order by seq desc";
+	private final String board_list_c = "select * from board where content like '%'||?||'%' order by seq desc";
+	
 	public void insertBoard(BoardDTO dto) {
 		System.out.println("==> jdbc로 insertBoard() 기능 처리");
 		try {
@@ -104,7 +106,12 @@ public class BoardDAO {
 		
 		try{
 			conn = JDBCUtill.getConnection();
-			stmt = conn.prepareStatement(board_list);
+			if(dto.getSearchCondition().equals("TITLE")) {
+				stmt = conn.prepareStatement(board_list_t);
+			}else {
+				stmt = conn.prepareStatement(board_list_c);
+			}
+			stmt.setString(1, dto.getSearchKeyword());
 			rs = stmt.executeQuery();
 			while(rs.next()){
 				BoardDTO board = new BoardDTO();

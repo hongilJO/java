@@ -38,7 +38,9 @@ public class BoardDAO_JdbcTemplate extends JdbcDaoSupport {
 	private final String board_update = "update board set title=?, content=?, where seq=?";
 	private final String board_delete = "delete board where seq=?";
 	private final String board_get = "select * from board where seq=?";
-	private final String board_list = "select * from board order by seq desc";
+	//private final String board_list = "select * from board order by seq desc";
+	private final String board_list_t = "select * from board where title like '%'||?||'%' order by seq desc";
+	private final String board_list_c = "select * from board where content like '%'||?||'%' order by seq desc";
 	
 	@Autowired
 	public void setSuperDataSource(DataSource dataSource){
@@ -161,7 +163,12 @@ public class BoardDAO_JdbcTemplate extends JdbcDaoSupport {
 		}
 		return boardlist;
 		*/
-		return getJdbcTemplate().query(board_list, new BoardRowMapper());
+		Object[] args = {dto.getSearchKeyword()};
+		if( dto.getSearchCondition().equals("TITLE")) {
+			return getJdbcTemplate().query(board_list_t, args, new BoardRowMapper());
+		}else {
+			return getJdbcTemplate().query(board_list_c, args, new BoardRowMapper());
+		}
 	}
 
 }
@@ -170,7 +177,7 @@ class BoardRowMapper implements RowMapper<BoardDTO>{
 	
 	public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException{
 		BoardDTO board = new BoardDTO();
-		board.setCnt(rs.getInt("seq"));
+		board.setSeq(rs.getInt("seq"));
 		board.setTitle(rs.getString("title"));
 		board.setWriter(rs.getString("writer"));
 		board.setContent(rs.getString("content"));

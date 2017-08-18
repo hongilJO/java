@@ -30,5 +30,14 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
+	<!-- ContextLoaderListener는 context-param을 통해 applicationANNOTATION.xml 위치를 읽어 올 수 있다.  -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationANNOTATION.xml</param-value>
+	</context-param>
+	<!-- ContextLoaderListener를 통해서 비지니스 로직의 ApplicationContext.xml을 로딩 할수가 있다. -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 	
 </web-app>
