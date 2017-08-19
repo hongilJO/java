@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springbook.biz.board.BoardDAO;
 import com.springbook.biz.board.BoardDTO;
+import com.springbook.biz.board.BoardDTOList;
 import com.springbook.biz.board.BoardService;
 import com.springbook.biz.user.UserDAO;
 import com.springbook.biz.user.UserDTO;
@@ -44,7 +46,26 @@ public class BoardController {
 		conditionMap.put("CONTENT", "CONTENT");
 		return conditionMap;
 	}
-
+	
+	@RequestMapping(value = "dataTransformXML.do")
+	@ResponseBody
+	public BoardDTOList dataTransform(BoardDTO board) {
+		board.setSearchCondition("TITLE");
+		board.setSearchKeyword("");
+		List<BoardDTO> boardList = boardService.getBoardList(board);
+		BoardDTOList boardDTOList = new BoardDTOList();
+		boardDTOList.setBoardList(boardList);
+		return boardDTOList;
+	}
+	
+	@RequestMapping(value = "dataTransformJSON.do")
+	@ResponseBody
+	public List<BoardDTO> dataTransformJson(BoardDTO board) {
+		board.setSearchCondition("TITLE");
+		board.setSearchKeyword("");
+		List<BoardDTO> boardList = boardService.getBoardList(board);
+		return boardList;
+	}
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
 	public String loginView(@ModelAttribute("user") UserDTO user) {
 		System.out.println("로그인 화면으로 이동");
